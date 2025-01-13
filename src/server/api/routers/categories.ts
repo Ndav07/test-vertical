@@ -1,4 +1,5 @@
 import { type Prisma } from "@prisma/client";
+import { randomUUID } from "crypto";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -13,10 +14,11 @@ export const categoriesRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx: { db }, input }) => {
+      console.log(input.cod, input.title);
       const limit = 10;
       const skip = limit * input.page;
       const where: Prisma.CategoriesWhereInput = {
-        cod: input.cod,
+        cod: { contains: input.cod },
         title: { contains: input.title },
       };
       const categories = await db.categories.findMany({
@@ -41,5 +43,24 @@ export const categoriesRouter = createTRPCRouter({
         nextPage: qtPages === input.page ? null : input.page + 1,
         prevPage: input.page === 1 ? null : input.page - 1,
       };
+    }),
+
+  create: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        cod: z.string(),
+        description: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      await db.categories.create({
+        data: {
+          id: randomUUID(),
+          cod: input.cod.toLocaleUpperCase(),
+          title: input.title,
+          description: input.description,
+        },
+      });
     }),
 });

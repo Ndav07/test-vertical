@@ -48,7 +48,7 @@ export const columns: ColumnDef<
     cell: ({ row }) => {
       return (
         <div
-          className="max-w-44 truncate"
+          className="max-w-[40rem] truncate"
           title={row.original.description ?? ""}
         >
           <span>{row.original.description}</span>

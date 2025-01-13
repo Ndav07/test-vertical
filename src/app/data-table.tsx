@@ -43,6 +43,7 @@ import {
 import { ArrowUpDownIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { RegisterCategorieDialog } from "~/components/registerDialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -114,53 +115,64 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className="flex flex-row items-center justify-between py-4">
-        <div className="mr-5">
-          <Input
-            placeholder="Buscar pelo código"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            className="w-[250px]"
-            onReset={() => setSearch("")}
-          />
+        <div className="flex flex-row">
+          <div className="mr-2">
+            <Input
+              placeholder="Buscar pelo código"
+              value={cod}
+              onChange={(event) =>
+                setCod(event.target.value.toLocaleUpperCase())
+              }
+              className="w-[250px]"
+              onReset={() => setCod("")}
+            />
+          </div>
+          <div className="mr-5">
+            <Input
+              placeholder="Buscar pelo nome"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="w-[250px]"
+              onReset={() => setSearch("")}
+            />
+          </div>
         </div>
 
-        <div className="mr-5">
-          <Input
-            placeholder="Buscar pelo nome"
-            value={cod}
-            onChange={(event) => setCod(event.target.value)}
-            className="w-[250px]"
-            onReset={() => setCod("")}
-          />
-        </div>
+        <div className="flex flex-row gap-2">
+          <RegisterCategorieDialog />
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto gap-2">
-              Colunas
-              <ArrowUpDownIcon height={15} width={15} className="opacity-70" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto gap-2">
+                Colunas
+                <ArrowUpDownIcon
+                  height={15}
+                  width={15}
+                  className="opacity-70"
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div className="rounded-md border">
@@ -212,11 +224,6 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-
-      <div className="text-muted-foreground mt-2 flex text-sm">
-        {table.getFilteredSelectedRowModel().rows.length} de{" "}
-        {table.getFilteredRowModel().rows.length} linha(s) selecionadas.
       </div>
 
       <Pagination>

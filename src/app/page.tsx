@@ -26,9 +26,9 @@ export default function Home() {
   } = api.categories.findAll.useInfiniteQuery(
     {
       page: pagination.pageIndex,
-      cod: debouncedCod && debouncedCod.length > 3 ? debouncedCod : undefined,
+      cod: debouncedCod && debouncedCod.length > 1 ? debouncedCod : undefined,
       title:
-        debouncedSearch && debouncedSearch.length > 3
+        debouncedSearch && debouncedSearch.length > 1
           ? debouncedSearch
           : undefined,
     },

@@ -10,7 +10,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-        main: "#38448B",
+        main: "#376c5e",
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: {

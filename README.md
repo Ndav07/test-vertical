@@ -1,6 +1,6 @@
 # Test-vertical
 
-# Passos para rodar localmente
+## Passos para rodar localmente
 
 Primeiro é dar é bixar o pnpm em sua máquina --> npm i -g pnpm
 Rodar o banco de dados utilizando o docker --> docker compose up ou docker compose up -d (caso não queira travar o terminal)
