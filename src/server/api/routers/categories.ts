@@ -1,8 +1,45 @@
+import { type Prisma } from "@prisma/client";
 import { z } from "zod";
-import { createTRPCRouter, } from "~/server/api/trpc";
-
-
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const categoriesRouter = createTRPCRouter({
-  
+  findAll: publicProcedure
+    .input(
+      z.object({
+        title: z.string().optional(),
+        cod: z.string().optional(),
+        cursor: z.string().optional(),
+        page: z.number().optional().default(0),
+      }),
+    )
+    .query(async ({ ctx: { db }, input }) => {
+      const limit = 10;
+      const skip = limit * input.page;
+      const where: Prisma.CategoriesWhereInput = {
+        cod: input.cod,
+        title: { contains: input.title },
+      };
+      const categories = await db.categories.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        take: limit,
+        skip: skip,
+      });
+
+      const categoriesCount = await db.categories.count({ where });
+      const qtPages = Math.ceil(categoriesCount / limit);
+
+      return {
+        categories: categories.map((categorie) => ({
+          id: categorie.id,
+          cod: categorie.cod,
+          title: categorie.title,
+          description: categorie.description,
+        })),
+        qtPages,
+        currentPage: input.page,
+        nextPage: qtPages === input.page ? null : input.page + 1,
+        prevPage: input.page === 1 ? null : input.page - 1,
+      };
+    }),
 });
