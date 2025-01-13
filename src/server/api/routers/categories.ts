@@ -63,4 +63,24 @@ export const categoriesRouter = createTRPCRouter({
         },
       });
     }),
+
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        cod: z.string(),
+        description: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      await db.categories.update({
+        where: { id: input.id },
+        data: {
+          cod: input.cod.toLocaleUpperCase(),
+          title: input.title,
+          description: input.description,
+        },
+      });
+    }),
 });

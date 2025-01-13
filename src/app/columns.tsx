@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { UpdateCategorieDialog } from "~/components/updateDialog";
 
 import { type RouterOutputs } from "~/trpc/react";
 
@@ -74,6 +75,10 @@ export const columns: ColumnDef<
             <DropdownMenuLabel>Opções</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
+            <UpdateCategorieDialog
+              {...row.original}
+              description={row.original.description ?? undefined}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       );
