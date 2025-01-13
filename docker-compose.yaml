@@ -1,0 +1,16 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: vertical_database
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=vertical
+      - POSTGRES_USER=vertical
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - vertical_data:/var/lib/postgresql/data
+
+volumes:
+  vertical_data:
+    driver: local
