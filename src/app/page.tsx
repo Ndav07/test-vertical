@@ -39,7 +39,7 @@ export default function Home() {
   );
 
   return (
-    <main className="flex h-screen w-screen flex-row overflow-x-hidden overflow-y-hidden bg-black">
+    <main className="flex h-screen w-screen flex-row overflow-x-hidden overflow-y-hidden bg-primary text-white">
       <div className="flex w-full flex-col items-center justify-between">
         <Header />
         <div className="sm:max-w-4/5 container mx-2 w-full sm:mx-12 2xl:mx-auto">

@@ -14,7 +14,6 @@ export const categoriesRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx: { db }, input }) => {
-      console.log(input.cod, input.title);
       const limit = 10;
       const skip = limit * input.page;
       const where: Prisma.CategoriesWhereInput = {
@@ -61,6 +60,38 @@ export const categoriesRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
         },
+      });
+    }),
+
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        cod: z.string(),
+        description: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      await db.categories.update({
+        where: { id: input.id },
+        data: {
+          cod: input.cod.toLocaleUpperCase(),
+          title: input.title,
+          description: input.description,
+        },
+      });
+    }),
+
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      await db.categories.delete({
+        where: { id: input.id },
       });
     }),
 });

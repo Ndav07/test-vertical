@@ -28,27 +28,38 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function RegisterCategorieDialog() {
+interface Props {
+  id: string;
+  title: string;
+  cod: string;
+  description?: string;
+}
+
+export function UpdateCategorieDialog(props: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const apiUtils = api.useUtils();
   const { toast } = useToast();
   const { register, handleSubmit, reset, formState } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      ...props,
+    },
   });
 
-  const createCategorie = api.categories.create.useMutation();
+  const updateCategorie = api.categories.update.useMutation();
 
-  const onSubmit: SubmitHandler<FormSchema> = async (props) => {
-    createCategorie.mutate(
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
+    updateCategorie.mutate(
       {
-        ...props,
+        id: props.id,
+        ...data,
       },
       {
         onSuccess: () => {
           void apiUtils.categories.findAll.invalidate();
           toast({
-            title: "Cadastro concluído",
-            description: "Cadastro realizado com sucesso.",
+            title: "Edição concluído",
+            description: "Edição realizada com sucesso.",
             variant: "success",
           });
           reset();
@@ -72,22 +83,24 @@ export function RegisterCategorieDialog() {
       onOpenChange={(open) => {
         if (!open) {
           reset();
-
           setOpenModal(!openModal);
         }
       }}
     >
       <DialogTrigger asChild>
-        <Button className="bg-main" onClick={() => setOpenModal(true)}>
-          Nova Categoria
-        </Button>
+        <p
+          onClick={() => setOpenModal(true)}
+          className="text-700 cursor-pointer rounded-md px-2 py-2 text-sm hover:bg-accent"
+        >
+          Editar
+        </p>
       </DialogTrigger>
 
-      <DialogContent className="bg-black text-white">
+      <DialogContent className="overflow-y-auto bg-black text-white">
         <DialogHeader>
-          <DialogTitle>Cadastro de categoria</DialogTitle>
+          <DialogTitle>Edição de categoria</DialogTitle>
           <DialogDescription>
-            Insira as informações abaixo para concluir o cadastro.
+            Insira as informações abaixo para concluir o edição.
           </DialogDescription>
         </DialogHeader>
 
@@ -128,7 +141,7 @@ export function RegisterCategorieDialog() {
           </div>
 
           <Button className="mt-2 w-fit bg-main px-4">
-            {createCategorie.isPending ? <SpinLoader /> : "Cadastrar categoria"}
+            {updateCategorie.isPending ? <SpinLoader /> : "Editar"}
           </Button>
         </form>
       </DialogContent>
