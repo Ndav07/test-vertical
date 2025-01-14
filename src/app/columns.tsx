@@ -2,6 +2,7 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { DeleteDialog } from "~/components/deleteDialog";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -79,6 +80,8 @@ export const columns: ColumnDef<
               {...row.original}
               description={row.original.description ?? undefined}
             />
+
+            <DeleteDialog id={row.original.id} />
           </DropdownMenuContent>
         </DropdownMenu>
       );

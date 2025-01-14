@@ -58,8 +58,8 @@ export function UpdateCategorieDialog(props: Props) {
         onSuccess: () => {
           void apiUtils.categories.findAll.invalidate();
           toast({
-            title: "Cadastro concluído",
-            description: "Cadastro realizado com sucesso.",
+            title: "Edição concluído",
+            description: "Edição realizada com sucesso.",
             variant: "success",
           });
           reset();
@@ -96,7 +96,7 @@ export function UpdateCategorieDialog(props: Props) {
         </p>
       </DialogTrigger>
 
-      <DialogContent className="overflow-y-auto bg-black">
+      <DialogContent className="overflow-y-auto bg-black text-white">
         <DialogHeader>
           <DialogTitle>Edição de categoria</DialogTitle>
           <DialogDescription>

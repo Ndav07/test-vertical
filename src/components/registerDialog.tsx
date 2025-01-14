@@ -83,7 +83,7 @@ export function RegisterCategorieDialog() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="overflow-y-auto bg-black">
+      <DialogContent className="bg-black text-white">
         <DialogHeader>
           <DialogTitle>Cadastro de categoria</DialogTitle>
           <DialogDescription>
