@@ -17,7 +17,7 @@ export default function Footer() {
 
       <div className="flex w-full items-center justify-center gap-2">
         <Copyright size="24" color="#0D0D0D" variant="TwoTone" />
-        <p className="text-sm text-black">2024 Níkollas David.</p>
+        <p className="text-sm text-black">2025 Níkollas David.</p>
       </div>
 
       <div
